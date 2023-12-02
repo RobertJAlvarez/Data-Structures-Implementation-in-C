@@ -1,11 +1,11 @@
-#ifndef __HASHTABLE_H__
-#define __HASHTABLE_H__
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
 
 #include <stdint.h>
 
 typedef struct __hashtable_struct_t {
   size_t size;
-  list_t *table;
+  list_t **table;
 } hashtable_t;
 
 /* Create a hashtable of certain size given in argument.
@@ -83,5 +83,11 @@ size_t number_entries_in_hashtable(hashtable_t *hashtable);
    O(n)
 */
 size_t max_number_collisions_in_hashtable(hashtable_t *hashtable);
+
+/* Returns the number of entries that are empty in hashtable.
+
+   O(n)
+*/
+size_t number_empty_entries_in_hashtable(hashtable_t *hashtable);
 
 #endif

@@ -7,7 +7,7 @@ CFLAGS = -O3 -g3 -Wall -Wextra -Werror=format-security -Werror=implicit-function
 all: test 
 
 compile: redblacktrees.o
-	mv $@ ../o
+	mv $^ ../o
 
 redblacktrees.o: redblacktrees.c redblacktrees.h
 	${CC} $(CFLAGS) -c -o $@ $<

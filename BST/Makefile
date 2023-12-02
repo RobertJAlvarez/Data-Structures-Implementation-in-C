@@ -7,7 +7,7 @@ CFLAGS = -O3 -g3 -Wall -Wextra -Werror=format-security -Werror=implicit-function
 all: test 
 
 compile: searchtrees.o
-	mv $@ ../o
+	mv $^ ../o
 
 searchtrees.o: searchtrees.c searchtrees.h
 	${CC} $(CFLAGS) -c -o $@ $<
