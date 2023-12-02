@@ -9,12 +9,13 @@ typedef struct __hashtable_entry_struct_t {
   void *value;
 } __hashtable_entry_t;
 
-static void error_no_mem(void) {
+static void error_no_mem(void)
+{
   fprintf(stderr, "Error: no memory left.\n");
   exit(1);
 }
 
-hashtable_t *create_hashtable(size_t size)
+hashtable_t *create_hashtable(size_t const size)
 {
   size_t n, i;
   hashtable_t *hashtable;
@@ -55,10 +56,11 @@ static void __delete_hashtable_entry(void *entry, void *data)
   free(entry);
 }
 
-void delete_hashtable(hashtable_t *hashtable,
-          void (*delete_key)(void *, void *),
-          void (*delete_value)(void *, void *),
-          void *data)
+void delete_hashtable(
+  hashtable_t *hashtable,
+  void (*delete_key)(void *, void *),
+  void (*delete_value)(void *, void *),
+  void *data)
 {
   size_t i;
   struct {
@@ -73,7 +75,11 @@ void delete_hashtable(hashtable_t *hashtable,
 
   for (i = ((size_t) 0); i < hashtable->size; ++i) {
     if (hashtable->table[i] != NULL) {
-      delete_list(hashtable->table[i], __delete_hashtable_entry, &mydata);
+      delete_list(
+        hashtable->table[i],
+        __delete_hashtable_entry,
+        &mydata
+      );
     }
   }
 
@@ -81,7 +87,10 @@ void delete_hashtable(hashtable_t *hashtable,
   free(hashtable);
 }
 
-static int __compare_hashtable_entry(void *a, void *b, void *data)
+static int __compare_hashtable_entry(
+  void *a,
+  void *b,
+  void *data)
 {
   struct {
     int (*compare_keys)(void *, void *, void *);
@@ -90,14 +99,16 @@ static int __compare_hashtable_entry(void *a, void *b, void *data)
   __hashtable_entry_t *pvt_a = a;
   __hashtable_entry_t *pvt_b = b;
 
-  return pvt_data->compare_keys(pvt_a->key, pvt_b->key, pvt_data->data);
+  return pvt_data->compare_keys(
+            pvt_a->key, pvt_b->key, pvt_data->data);
 }
 
-void *lookup_in_hashtable(hashtable_t *hashtable,
-        void *key,
-        uint32_t (*hash_key)(void *, void *),
-        int (*compare_keys)(void *, void *, void *),
-        void *data)
+void *lookup_in_hashtable(
+  hashtable_t *hashtable,
+  void *key,
+  uint32_t (*hash_key)(void *, void *),
+  int (*compare_keys)(void *, void *, void *),
+  void *data)
 {
   uint32_t hash;
   size_t idx;
@@ -110,21 +121,22 @@ void *lookup_in_hashtable(hashtable_t *hashtable,
 
   hash = hash_key(key, data);
   idx = ((size_t) hash) % hashtable->size;
-  
+
   if (hashtable->table[idx] == NULL) return NULL;
 
   sought_entry.key = key;
   sought_entry.value = NULL;
   mydata.compare_keys = compare_keys;
   mydata.data = data;
-  
+
   entry = search_list(hashtable->table[idx],
-          &sought_entry,
-          __compare_hashtable_entry,
-          &mydata);
+            &sought_entry,
+            __compare_hashtable_entry,
+            &mydata
+          );
   
   if (entry == NULL) return NULL;
-  
+
   return entry->value;
 }
 
@@ -147,13 +159,14 @@ static void *__copy_hashtable_entry(void *entry, void *data)
   return new_entry;
 }
 
-void add_to_hashtable(hashtable_t *hashtable,
-          void *key,
-          void *value,
-          void *(*copy_key)(void *, void *),
-          void *(*copy_value)(void *, void *),
-          uint32_t (*hash_key)(void *, void *),
-          void *data)
+void add_to_hashtable(
+  hashtable_t *hashtable,
+  void *key,
+  void *value,
+  void *(*copy_key)(void *, void *),
+  void *(*copy_value)(void *, void *),
+  uint32_t (*hash_key)(void *, void *),
+  void *data)
 {
   uint32_t hash;
   size_t idx;
@@ -177,16 +190,11 @@ void add_to_hashtable(hashtable_t *hashtable,
   mydata.copy_value = copy_value;
   mydata.data = data;
 
-  // TODO:
-  printf("--------------\n");
-  printf("idx: %zu, key: %s\n", idx, (char *) key);
-  printf("&hashtable->table[%zu] = %p\n", idx, &hashtable->table[idx]);
-  printf("hashtable->table[%zu] = %p\n", idx, hashtable->table[idx]);
-
   prepend_to_list(hashtable->table[idx],
-      &added_entry,
-      __copy_hashtable_entry,
-      &mydata);
+    &added_entry,
+    __copy_hashtable_entry,
+    &mydata
+  );
 }
 
 size_t number_entries_in_hashtable(hashtable_t *hashtable)
@@ -194,20 +202,18 @@ size_t number_entries_in_hashtable(hashtable_t *hashtable)
   size_t i, k, l;
 
   k = (size_t) 0;
-printf("215:\n");
-printf("hashtable->size = %zu\n", hashtable->size);
   for (i = ((size_t) 0); i < hashtable->size; ++i) {
     if (hashtable->table[i] != NULL) {
       l = length_list(hashtable->table[i]);
       k += l;
     }
   }
-printf("223:\n");
 
   return k;
 }
 
-size_t max_number_collisions_in_hashtable(hashtable_t *hashtable)
+size_t max_number_collisions_in_hashtable(
+  hashtable_t *hashtable)
 {
   size_t i, k, l;
 
@@ -224,7 +230,8 @@ size_t max_number_collisions_in_hashtable(hashtable_t *hashtable)
   return k - ((size_t) 1);
 }
 
-size_t number_empty_entries_in_hashtable(hashtable_t *hashtable)
+size_t number_empty_entries_in_hashtable(
+  hashtable_t *hashtable)
 {
   size_t i, n;
 

@@ -71,8 +71,8 @@ void search_tree_maximum(
   const search_tree_t *tree
 );
 
-/* Returns the predecessor of a key and value associated with that
-   key, comparing the keys with compare_key.
+/* Returns the predecessor of a key and value associated 
+   with that key, comparing the keys with compare_key.
 
    Returns NULL for both the key and the value if the
    key passed in argument cannot be found or if that
@@ -91,8 +91,8 @@ void search_tree_predecessor(
   void *data
 );
 
-/* Returns the successor of a key and value associated with that
-   key, comparing the keys with compare_key.
+/* Returns the successor of a key and value associated with
+   that key, comparing the keys with compare_key.
 
    Returns NULL for both the key and the value if the
    key passed in argument cannot be found or if that
@@ -111,9 +111,9 @@ void search_tree_successor(
   void *data
 );
 
-/* Inserts a key and an associated value into a tree, comparing the
-   keys with compare_key and copying the key and value with the
-   copy_key resp. copy_value functions.
+/* Inserts a key and an associated value into a tree,
+   comparing the keys with compare_key and copying the key
+   and value with the copy_key resp. copy_value functions.
 
    compare_key takes two keys and the data pointer in
    argument. It returns -1, 0, 1 depending on the
@@ -129,9 +129,9 @@ void search_tree_insert(
   void *data
 );
 
-/* Removes a key and the associated value in a tree, comparing the
-   keys with compare_key and deleting the key and value with the
-   delete_key resp. delete_value function.
+/* Removes a key and the associated value in a tree,
+   comparing the keys with compare_key and deleting the key
+   and value with the delete_key resp. delete_value function.
 
    compare_key takes two keys and the data pointer in
    argument. It returns -1, 0, 1 depending on the

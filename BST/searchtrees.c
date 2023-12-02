@@ -38,8 +38,10 @@ static void __search_tree_delete_aux(
   void *data)
 {
   if (node == NULL) return;
-  __search_tree_delete_aux(node->left, delete_key, delete_value, data);
-  __search_tree_delete_aux(node->right, delete_key, delete_value, data);
+  __search_tree_delete_aux(
+      node->left, delete_key, delete_value, data);
+  __search_tree_delete_aux(
+      node->right, delete_key, delete_value, data);
 
   delete_key(node->key, data);
   delete_value(node->value, data);
@@ -53,11 +55,13 @@ void search_tree_delete(
   void (*delete_value)(void *, void *),
   void *data)
 {
-  __search_tree_delete_aux(tree->root, delete_key, delete_value, data);
+  __search_tree_delete_aux(
+      tree->root, delete_key, delete_value, data);
   free(tree);
 }
 
-static size_t __search_tree_number_entries_aux(const tree_node_t *node)
+static size_t __search_tree_number_entries_aux(
+  const tree_node_t *node)
 {
   size_t l, r;
 
@@ -74,7 +78,8 @@ size_t search_tree_number_entries(const search_tree_t *tree)
   return __search_tree_number_entries_aux(tree->root);
 }
 
-static size_t __search_tree_height_aux(const tree_node_t *node)
+static size_t __search_tree_height_aux(
+  const tree_node_t *node)
 {
   size_t l, r;
 
@@ -117,7 +122,8 @@ void *search_tree_search(
 {
   tree_node_t *node;
 
-  node = __search_tree_search_aux(tree->root, key, compare_key, data);
+  node = __search_tree_search_aux(
+            tree->root, key, compare_key, data);
 
   if (node == NULL) return NULL;
 
@@ -137,7 +143,10 @@ void search_tree_minimum(
     return;
   }
 
-  for (node = tree->root; node->left != NULL; node = node->left);
+  for (node = tree->root;
+       node->left != NULL;
+       node = node->left
+      );
 
   *min_key = node->key;
   *min_value = node->value;
@@ -156,7 +165,10 @@ void search_tree_maximum(
     return;
   }
 
-  for (node = tree->root; node->right != NULL; node = node->right);
+  for (node = tree->root;
+       node->right != NULL;
+       node = node->right
+      );
 
   *max_key = node->key;
   *max_value = node->value;
@@ -172,7 +184,8 @@ void search_tree_predecessor(
 {
   tree_node_t *x, *y;
 
-  x = __search_tree_search_aux(tree->root, key, compare_key, data);
+  x = __search_tree_search_aux(
+          tree->root, key, compare_key, data);
 
   // If node doesn't exists
   if (x == NULL) {
@@ -195,7 +208,8 @@ void search_tree_predecessor(
     y = y->parent;
   }
 
-  // If parent doesn't exists return NULL (x is the minimum element in the tree)
+  // If parent doesn't exists return NULL
+  //  (x is the minimum element in the tree)
   if (y == NULL) {
     *prec_key = NULL;
     *prec_value = NULL;
@@ -217,7 +231,8 @@ void search_tree_successor(
 {
   tree_node_t *x, *y;
 
-  x = __search_tree_search_aux(tree->root, key, compare_key, data);
+  x = __search_tree_search_aux(
+      tree->root, key, compare_key, data);
 
   // If node doesn't exists
   if (x == NULL) {
@@ -234,13 +249,14 @@ void search_tree_successor(
     return;
   }
 
-  // Find the next parent where x is a child in the left sub-tree
+  // Find next parent where x is a child in the left sub-tree
   for (y = x->parent; ((y != NULL) && (x == y->right)); ) {
     x = y;
     y = y->parent;
   }
 
-  // If parent doesn't exists return NULL (x is the maximum element in the tree)
+  // If parent doesn't exists return NULL
+  //  (x is the maximum element in the tree)
   if (y == NULL) {
     *succ_key = NULL;
     *succ_value = NULL;
@@ -284,9 +300,12 @@ void search_tree_insert(
 {
   tree_node_t *x, *y, *z;
 
-  if (__search_tree_search_aux(tree->root, key, compare_key, data) != NULL) return;
+  if (__search_tree_search_aux(
+        tree->root, key, compare_key, data)
+      != NULL) return;
 
-  z = __search_tree_insert_aux(key, value, copy_key, copy_value, data);
+  z = __search_tree_insert_aux(
+        key, value, copy_key, copy_value, data);
 
   if (tree->root == NULL) {
     tree->root = z;
@@ -334,7 +353,8 @@ static void __search_tree_remove_aux_transplant(
   }
 }
 
-static tree_node_t *__search_tree_remove_aux_minimum(tree_node_t *z)
+static tree_node_t *__search_tree_remove_aux_minimum(
+  tree_node_t *z)
 {
   tree_node_t *x;
 
@@ -357,7 +377,9 @@ static void __search_tree_remove_aux(
     } else {
       y = __search_tree_remove_aux_minimum(z->right);
       if (y != z->right) {
-        __search_tree_remove_aux_transplant(tree, y, y->right);
+        __search_tree_remove_aux_transplant(
+            tree, y, y->right
+        );
         y->right = z->right;
         y->right->parent = y;
       }
@@ -378,7 +400,8 @@ void search_tree_remove(
 {
   tree_node_t *z;
 
-  z = __search_tree_search_aux(tree->root, key, compare_key, data);
+  z = __search_tree_search_aux(
+        tree->root, key, compare_key, data);
 
   if (z == NULL) return;
 

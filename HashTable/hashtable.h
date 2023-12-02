@@ -1,5 +1,5 @@
-#ifndef HASHTABLE_H
-#define HASHTABLE_H
+#ifndef __HASHTABLE_H__
+#define __HASHTABLE_H__
 
 #include <stdint.h>
 
@@ -15,7 +15,7 @@ typedef struct __hashtable_struct_t {
    Creates a hashtable of size 1, if the size in 
    argument is zero.
 */
-hashtable_t *create_hashtable(size_t);
+hashtable_t *create_hashtable(const size_t);
 
 /* Delete a hashtable. Calls delete_key for each key and
    calls delete_value for each value.
@@ -25,10 +25,11 @@ hashtable_t *create_hashtable(size_t);
    The data pointer is given back to the delete_key
    and delete_value functions as their last argument.
 */
-void delete_hashtable(hashtable_t *hashtable,
-          void (*delete_key)(void *, void *),
-          void (*delete_value)(void *, void *),
-          void *data);
+void delete_hashtable(
+  hashtable_t *hashtable,
+  void (*delete_key)(void *, void *),
+  void (*delete_value)(void *, void *),
+  void *data);
 
 /* Lookup a key in a hashtable. Calls hash_key to compute 
    the hash. Calls compare_keys to compare the keys 
@@ -44,11 +45,12 @@ void delete_hashtable(hashtable_t *hashtable,
    The data pointer is given back to the hash_key
    and compare_keys functions as their last argument.
 */
-void *lookup_in_hashtable(hashtable_t *hashtable,
-        void *key,
-        uint32_t (*hash_key)(void *, void *),
-        int (*compare_keys)(void *, void *, void *),
-        void *data);
+void *lookup_in_hashtable(
+  hashtable_t *hashtable,
+  void *key,
+  uint32_t (*hash_key)(void *, void *),
+  int (*compare_keys)(void *, void *, void *),
+  void *data);
 
 /* Add a key->value pair to a hashtable. Calls 
    copy_key to copy the key. Calls copy_value to copy the 
@@ -59,13 +61,14 @@ void *lookup_in_hashtable(hashtable_t *hashtable,
    The data pointer is given back to the copy_key, copy_value
    and hash_key functions as their last argument.
 */
-void add_to_hashtable(hashtable_t *hashtable,
-          void *key,
-          void *value,
-          void *(*copy_key)(void *, void *),
-          void *(*copy_value)(void *, void *),
-          uint32_t (*hash_key)(void *, void *),
-          void *data);
+void add_to_hashtable(
+  hashtable_t *hashtable,
+  void *key,
+  void *value,
+  void *(*copy_key)(void *, void *),
+  void *(*copy_value)(void *, void *),
+  uint32_t (*hash_key)(void *, void *),
+  void *data);
 
 /* Returns the number of entries in the hashtable
 
@@ -82,12 +85,14 @@ size_t number_entries_in_hashtable(hashtable_t *hashtable);
 
    O(n)
 */
-size_t max_number_collisions_in_hashtable(hashtable_t *hashtable);
+size_t max_number_collisions_in_hashtable(
+  hashtable_t *hashtable);
 
 /* Returns the number of entries that are empty in hashtable.
 
    O(n)
 */
-size_t number_empty_entries_in_hashtable(hashtable_t *hashtable);
+size_t number_empty_entries_in_hashtable(
+  hashtable_t *hashtable);
 
 #endif

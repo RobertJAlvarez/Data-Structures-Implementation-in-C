@@ -25,7 +25,8 @@ void red_black_tree_delete(
 
    Returns zero for an empty tree.
 */
-size_t red_black_tree_number_entries(const red_black_tree_t *tree);
+size_t red_black_tree_number_entries(
+  const red_black_tree_t *tree);
 
 /* Returns the height of a red-black tree
 

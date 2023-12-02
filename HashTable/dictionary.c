@@ -17,7 +17,7 @@ static void error_no_mem(void)
   exit(1);
 }
 
-static void input_string(char str[], size_t n)
+static void input_string(char str[], const size_t n)
 {
   char c;
   size_t i;
@@ -130,7 +130,9 @@ static void *copy_value(void *value, void *data)
   return value;
 }
 
-static int read_dictionary_line(hashtable_t *hashtable, char *line)
+static int read_dictionary_line(
+  hashtable_t *hashtable,
+  char *line)
 {
   char *spanish_word;
   char *english_words;
@@ -146,18 +148,21 @@ static int read_dictionary_line(hashtable_t *hashtable, char *line)
 
   english_meanings = read_english_meanings(english_words);
 
-  add_to_hashtable(hashtable,
-       spanish_word,
-       english_meanings,
-       copy_key,
-       copy_value,
-       hash_key,
-       NULL);
+  add_to_hashtable(
+    hashtable,
+    spanish_word,
+    english_meanings,
+    copy_key,
+    copy_value,
+    hash_key,
+    NULL);
 
   return 0;
 }
 
-static int read_dictionary_file(hashtable_t *hashtable, char *filename)
+static int read_dictionary_file(
+  hashtable_t *hashtable,
+  char *filename)
 {
   FILE *file;
   size_t pos;
@@ -200,7 +205,10 @@ static int read_dictionary_file(hashtable_t *hashtable, char *filename)
   }
  
   if (fclose(file) != 0) {
-    fprintf(stderr, "Could not close file \"%s\": %s\n", filename, strerror(errno));
+    fprintf(stderr, "Could not close file \"%s\": %s\n",
+      filename,
+      strerror(errno)
+    );
     return -1;
   }
 
@@ -222,7 +230,9 @@ static void print_meaning(void *value, void *data)
   printf("%s\n", pvt_value);
 }
 
-static void lookup_and_display(hashtable_t *hashtable, char *spanish)
+static void lookup_and_display(
+  hashtable_t *hashtable,
+  char *spanish)
 {
   list_t value;
 

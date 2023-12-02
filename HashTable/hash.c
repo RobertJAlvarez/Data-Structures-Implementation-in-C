@@ -2,12 +2,18 @@
 #include <stdint.h>
 #include "hash.h"
 
-#define Q            ((uint64_t) (18446744073709551359ull))    /* 2^64 - 257 is prime */
-#define TWO64_MOD_Q  ((uint64_t) (257))                        /* 2^64 mod Q */
-#define A            ((uint64_t) (16777890769592355103ull))    /* prime */
-#define B            ((uint64_t) (14721169578037290713ull))    /* prime */
+/* 2^64 - 257 is prime */
+#define Q           ((uint64_t) (18446744073709551359ull))
+/* 2^64 mod Q */
+#define TWO64_MOD_Q ((uint64_t) (257))
+/* prime */
+#define A           ((uint64_t) (16777890769592355103ull))
+/* prime */
+#define B           ((uint64_t) (14721169578037290713ull))
 
-static inline uint64_t add_uint64_mod_q(uint64_t a, uint64_t b)
+static inline uint64_t add_uint64_mod_q(
+  uint64_t a,
+  uint64_t b)
 {
   __uint128_t t;
   uint64_t c, s;
@@ -18,7 +24,9 @@ static inline uint64_t add_uint64_mod_q(uint64_t a, uint64_t b)
   return (((s % Q) + (c * TWO64_MOD_Q)) % Q);
 }
 
-static inline uint64_t mul_uint64_mod_q(uint64_t a, uint64_t b)
+static inline uint64_t mul_uint64_mod_q(
+  uint64_t a,
+  uint64_t b)
 {
   __uint128_t t, r;
   uint64_t h, l, s, c;
@@ -97,12 +105,14 @@ uint32_t hash_float(float a)
   return hash_double((double) a);
 }
 
-static inline uint32_t hash_mem_up_to_8(const void *ptr, size_t n)
+static inline uint32_t hash_mem_up_to_8(
+  const void *ptr,
+  const size_t n)
 {
   uint64_t t;
 
   if (n > ((size_t) 8)) return ((uint32_t) 0);
-  
+
   t = (uint64_t) 0;
   if (n > ((size_t) 0)) {
     memcpy(&t, ptr, n);
