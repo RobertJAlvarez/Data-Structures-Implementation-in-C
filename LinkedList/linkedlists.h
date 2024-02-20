@@ -3,11 +3,12 @@
 
 #include <stdlib.h>
 
-typedef struct __node_struct_t {
+typedef __node_t {
   void *data;
-  struct __node_struct_t *prev;
-  struct __node_struct_t *next;
-} node_t;
+  __node_t *prev;
+  __node_t *next;
+}
+node_t;
 
 typedef struct {
   node_t *head;
